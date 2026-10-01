@@ -1,0 +1,80 @@
+*From* Principles of Valdorian Law, *3rd ed. (a fictional text on the law of the Republic of Valdoria). Each excerpt gives the textbook prose, then its formalization.*
+
+## Notation
+
+**Symbols:** ∀ all, ∃ exists, ∧ and, ∨ or, ¬ not, → implies, ↔ iff, ≺ strictly before. **Deontic operators:** O obligatory, P permitted, F forbidden. Domains: a, b = persons, c = contract, t = time, d = duty, ω = act, ν = state of mind.
+
+---
+
+**1. Formation of a contract**
+
+*"A contract arises only where one party makes a definite offer, the other accepts it without variation, and each gives something of value. Both parties must have legal capacity, and the object of the bargain must not be unlawful. Absent any element, no obligation binds either side."*
+
+- ∀c (Contract(c) ↔ ∃a,b [Offer(a,b,c) ∧ Definite(c) ∧ Accept(b,c) ∧ ¬Varies(Accept, Offer) ∧ Consideration(a,c) ∧ Consideration(b,c) ∧ Capacity(a) ∧ Capacity(b) ∧ Lawful(Object(c))])
+- ∀c (¬Contract(c) → ∀a ¬Bound(a,c))
+
+**2. The mailbox rule**
+
+*"Acceptance by post takes effect at the moment of dispatch, not receipt. Revocation of an offer, by contrast, takes effect only when it reaches the offeree. An offer therefore cannot be revoked after the offeree has posted an acceptance."*
+
+- ∀c (Accept(b,c) by Post → Effective(Accept) at t_dispatch)
+- Effective(Revoke(a,c)) at t_receipt(b)
+- Dispatch(Accept) ≺ Receipt(Revoke) → ¬Effective(Revoke)
+
+**3. Negligence**
+
+*"Liability in negligence requires a duty of care owed to the plaintiff, a breach of that duty by conduct falling below the standard of a reasonable person, actual and proximate causation, and resulting damage. Failure to prove any one element defeats the claim."*
+
+- ∀a,b (Liable(a,b) ↔ Duty(a,b) ∧ Breach(a,b) ∧ ActualCause(a,b) ∧ ProximateCause(a,b) ∧ Damage(b))
+- Breach(a,b) ↔ Conduct(a) < Standard(ReasonablePerson)
+- ∃e ∈ Elements ¬Proved(e) → ¬Liable(a,b)
+
+**4. Criminal liability**
+
+*"No person is guilty of a serious offense unless the prosecution proves both a prohibited act and a culpable mental state, and the two must coincide in time. Strict liability offenses are the exception and are disfavored."*
+
+- ∀a,ω (Guilty(a,ω) ↔ ActusReus(a,ω) ∧ MensRea(a,ω) ∧ Concurrent(ActusReus, MensRea))
+- StrictLiability(ω) → Exception ∧ Disfavored
+- ∀ω (Serious(ω) → ¬StrictLiability(ω)) *(default presumption)*
+
+**5. Adverse possession**
+
+*"A possessor acquires title to land after fifteen continuous years of possession that is open, hostile to the owner's claim, and exclusive. Permission from the owner defeats hostility and stops the clock."*
+
+- ∀a,l (Title(a,l) ← ∃t [Duration(Possess(a,l)) ≥ 15y ∧ Continuous ∧ Open ∧ Hostile ∧ Exclusive])
+- Permission(Owner, a, l) → ¬Hostile(a,l) ∧ ¬Accrues(Clock)
+
+**6. Hearsay**
+
+*"An out-of-court statement offered to prove the truth of what it asserts is inadmissible unless a recognized exception applies. A statement offered only to show its effect on the listener is not hearsay."*
+
+- ∀s (OutOfCourt(s) ∧ Offered(s, Truth(s)) → Hearsay(s))
+- Hearsay(s) ∧ ¬∃x ∈ Exceptions Applies(x,s) → F(Admit(s))
+- Offered(s, EffectOnListener) → ¬Hearsay(s)
+
+**7. Statutes of limitation**
+
+*"A claim must be filed within the prescribed period, which runs from the date the plaintiff knew, or reasonably should have known, of the injury. Expiry bars the remedy but not the right itself."*
+
+- O(File(claim) before t_discovery + Period)
+- t_discovery = min(t_knew, t_shouldHaveKnown)
+- Expired(Period) → ¬Remedy(claim) ∧ Right(claim) *(right survives, remedy barred)*
+
+**8. Burden and standard of proof**
+
+*"In civil matters the claimant bears the burden of proof on the balance of probabilities. In criminal matters the burden rests on the prosecution throughout, and the standard is proof beyond reasonable doubt. The accused is never required to prove innocence."*
+
+- Civil(case) → Burden(Claimant) ∧ Standard = P(claim) > 0.5
+- Criminal(case) → Burden(Prosecution) ∧ Standard = BeyondReasonableDoubt
+- ∀a (Accused(a) → ¬O(Prove(a, Innocence)))
+
+**9. Duty to give notice (a deontic example)**
+
+*"A landlord must give tenants at least thirty days' written notice before raising rent. A landlord may not raise rent mid-term unless the lease expressly permits it."*
+
+- O(Notice(Landlord, Tenant, Writing) ≥ 30d before RentIncrease)
+- F(RentIncrease during Term) ∨ P(RentIncrease during Term) ↔ ExpressClause(Lease) *(forbidden unless the lease permits)*
+
+---
+
+**Caveats:** These excerpts are invented and don't reflect any real jurisdiction. As before, time durations are kept as bounds, and mental states like "reasonable" or "hostile" are left as primitive predicates. I can expand any section into a fuller deontic or temporal-logic treatment, or write more excerpts in a particular area such as property, torts, or evidence.
